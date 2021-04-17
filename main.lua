@@ -6,6 +6,20 @@ function init()
 
 	--emit = false
 	--ui = false
+ DEFAULT_RADIUS = 0.4
+ MIN_RADIUS = 0.1
+ MAX_RADIUS = 10
+ RADIUS_INCREMENT = 0.025
+ radius = DEFAULT_RADIUS
+end
+
+function clamp(value, min, max)
+ if value < min then
+  return min
+ elseif value > max then
+  return max
+ end
+ return value
 end
 
 function tick(dt)
@@ -18,9 +32,22 @@ function tick(dt)
 			local hit, dist, normal, shape = QueryRaycast(pos, dir, 500)
 			if hit then
 				local hitPoint = VecAdd(pos, VecScale(dir, dist))
-    local radius = 0.4
 				MakeHole(hitPoint, radius, radius, radius)
 			end
 		end
+  if InputDown("shift") then
+   radius = radius + RADIUS_INCREMENT
+  elseif InputDown("ctrl") then
+   radius = radius - RADIUS_INCREMENT
+  end
+  radius = clamp(radius, MIN_RADIUS, MAX_RADIUS)
 	end
+end
+
+function draw()
+ if GetString("game.player.tool") == "enholer" then
+  UiFont("regular.ttf", 22)
+  UiTranslate(100, 200)
+  UiText(radius)
+ end
 end
