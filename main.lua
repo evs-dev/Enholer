@@ -9,7 +9,7 @@ function init()
 
  radius = DEFAULT_RADIUS
  hit = false
- hitPoint = Vec(0, 0, 0)
+ hitPoint = Vec()
 end
 
 function clamp(value, min, max)
@@ -28,7 +28,7 @@ function tick(dt)
   local ct = GetCameraTransform()
   local pos = ct.pos
   local dir = TransformToParentVec(ct, Vec(0, 0, -1))
-  local didHit, dist, normal, shape = QueryRaycast(pos, dir, 500)
+  local didHit, dist = QueryRaycast(pos, dir, 500)
   -- Update the global variables for draw() to use
   hit = didHit
   if didHit then
