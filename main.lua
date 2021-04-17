@@ -6,7 +6,7 @@ function init()
  MIN_RADIUS = 0.1
  MAX_RADIUS = 10
  RADIUS_INCREMENT = 0.025
- 
+
  radius = DEFAULT_RADIUS
  hit = false
  hitPoint = Vec(0, 0, 0)
@@ -36,10 +36,8 @@ function tick(dt)
   end
 
   -- Check for left click to make hole
-  if GetBool("game.player.canusetool") and InputDown("lmb") then
-   if didHit then
-    MakeHole(hitPoint, radius, radius, radius)
-   end
+  if didHit and InputDown("lmb") and GetBool("game.player.canusetool") then
+   MakeHole(hitPoint, radius, radius, radius)
   end
 
   -- Check for radius increasing/decreasing input
