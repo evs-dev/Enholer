@@ -51,7 +51,7 @@ function tick(dt)
 end
 
 function draw()
- if hit and GetString("game.player.tool") == "enholer" then
+ if hit and GetString("game.player.tool") == "enholer" and GetBool("game.player.canusetool") then
   -- Draw radius indicator scaled to world space radius
   local x, y, dist = UiWorldToPixel(hitPoint)
   UiTranslate(x, y)
