@@ -22,13 +22,14 @@ function clamp(value, min, max)
 end
 
 function tick(dt)
- -- Check if Enholer is selected
- if GetString("game.player.tool") == "enholer" then
+ -- Check if Enholer is selected and can be used
+ if GetString("game.player.tool") == "enholer" and GetBool("game.player.canusetool") then
   -- Raycast at what the player is looking at, if anything
   local ct = GetCameraTransform()
   local pos = ct.pos
   local dir = TransformToParentVec(ct, Vec(0, 0, -1))
   local didHit, dist = QueryRaycast(pos, dir, 500)
+  
   -- Update the global variables for draw() to use
   hit = didHit
   if didHit then
@@ -36,7 +37,7 @@ function tick(dt)
   end
 
   -- Check for left click to make hole
-  if didHit and InputDown("lmb") and GetBool("game.player.canusetool") then
+  if didHit and InputDown("lmb") then
    MakeHole(hitPoint, radius, radius, radius)
   end
 
@@ -47,11 +48,13 @@ function tick(dt)
    radius = radius - RADIUS_INCREMENT
   end
   radius = clamp(radius, MIN_RADIUS, MAX_RADIUS)
+ else
+  hit = false
  end
 end
 
 function draw()
- if hit and GetString("game.player.tool") == "enholer" and GetBool("game.player.canusetool") then
+ if hit then
   -- Draw radius indicator scaled to world space radius
   local x, y, dist = UiWorldToPixel(hitPoint)
   UiTranslate(x, y)
