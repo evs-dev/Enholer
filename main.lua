@@ -64,11 +64,12 @@ function draw()
  end
 
  -- Radius configuration
+ UiTranslate(UiWidth() - 60, 60)
+ UiAlign("right middle")
+ UiFont("regular.ttf", 30)
+
  if inRadiusConfig then
   UiMakeInteractive()
-  UiTranslate(UiWidth() - 60, 60)
-  UiAlign("right middle")
-  UiFont("regular.ttf", 30)
   UiText("Press A to decrease radius")
   UiTranslate(0, 24)
   UiText("Press D to increase radius")
@@ -80,5 +81,7 @@ function draw()
    radius = radius + RADIUS_INCREMENT
   end
   radius = clamp(radius, MIN_RADIUS, MAX_RADIUS)
+ else
+  UiText("Press R to change radius")
  end
 end
