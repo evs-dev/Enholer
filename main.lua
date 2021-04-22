@@ -75,14 +75,14 @@ function draw()
    UiMakeInteractive()
    UiText("Press R to close")
    UiTranslate(0, 26)
-   UiText("Press A to decrease radius")
+   UiText("Press Left to decrease radius")
    UiTranslate(0, 26)
-   UiText("Press D to increase radius")
+   UiText("Press Right to increase radius")
 
-   if InputDown("a") then
+   if InputDown("left") then
     radius = radius - RADIUS_INCREMENT
    end
-   if InputDown("d") then
+   if InputDown("right") then
     radius = radius + RADIUS_INCREMENT
    end
    radius = clamp(radius, MIN_RADIUS, MAX_RADIUS)
