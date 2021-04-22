@@ -8,6 +8,7 @@ function init()
  RADIUS_INCREMENT = 0.025
 
  radius = DEFAULT_RADIUS
+ isUsingTool = false
  inRadiusConfig = false
  hit = false
  hitPoint = Vec()
@@ -24,7 +25,8 @@ end
 
 function tick(dt)
  -- Check if Enholer is selected
- if GetString("game.player.tool") == "enholer" and (GetBool("game.player.canusetool") or inRadiusConfig) then
+ isUsingTool = GetString("game.player.tool") == "enholer" and (GetBool("game.player.canusetool") or inRadiusConfig)
+ if isUsingTool then
   -- Raycast at what the player is looking at, if anything
   local ct = GetCameraTransform()
   local pos = ct.pos
@@ -59,29 +61,33 @@ function draw()
   UiPop()
  end
 
- if InputPressed("r") then
-  inRadiusConfig = not inRadiusConfig
- end
-
- -- Radius configuration
- UiTranslate(UiWidth() - 60, 60)
- UiAlign("right middle")
- UiFont("regular.ttf", 30)
-
- if inRadiusConfig then
-  UiMakeInteractive()
-  UiText("Press A to decrease radius")
-  UiTranslate(0, 24)
-  UiText("Press D to increase radius")
-
-  if InputDown("a") then
-   radius = radius - RADIUS_INCREMENT
+ if isUsingTool then
+  -- Radius configuration
+  if InputPressed("r") then
+   inRadiusConfig = not inRadiusConfig
   end
-  if InputDown("d") then
-   radius = radius + RADIUS_INCREMENT
+
+  UiTranslate(UiWidth() - 350, 60)
+  UiAlign("left top")
+  UiFont("regular.ttf", 26)
+
+  if inRadiusConfig then
+   UiMakeInteractive()
+   UiText("Press R to close")
+   UiTranslate(0, 26)
+   UiText("Press A to decrease radius")
+   UiTranslate(0, 26)
+   UiText("Press D to increase radius")
+
+   if InputDown("a") then
+    radius = radius - RADIUS_INCREMENT
+   end
+   if InputDown("d") then
+    radius = radius + RADIUS_INCREMENT
+   end
+   radius = clamp(radius, MIN_RADIUS, MAX_RADIUS)
+  else
+   UiText("Press R to change radius")
   end
-  radius = clamp(radius, MIN_RADIUS, MAX_RADIUS)
- else
-  UiText("Press R to change radius")
  end
 end
